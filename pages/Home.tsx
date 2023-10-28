@@ -1,25 +1,14 @@
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 import styles from "../styles/home.module.css";
 
-const getData = async () => {
-  const data = await fetch("/api/blogs");
-  const res = await data.json();
-  return res;
-};
-
-const Home = () => {
-  const [data, setData] = useState([]);
-
-  useEffect(() => {
-    getData().then((data) => {
-      setData(data);
-    });
-  }, []);
-
-  console.log(data, "this is data");
+interface IData {
+  content: string;
+  author: string;
+  title: string;
+}
+const Home = ({ res }: { res: IData[] }) => {
   return (
     <>
       <Head>
@@ -30,7 +19,7 @@ const Home = () => {
         <Image className={styles.homeImg} src="/images/coderImg.avif" alt="coder image" width={200} height={200} />
         <div className="mt-10 flex justify-center flex-col items-center w-full">
           <h1 className="text-2xl">Latest Blogs</h1>
-          {data?.map((item: { title: string; content: string; author: string }, index: number): JSX.Element => {
+          {res?.map((item: { title: string; content: string; author: string }, index: number): JSX.Element => {
             return (
               <div key={index} className="mt-10 border-2 border-black rounded border-solid p-2">
                 <Link href={`/blog/${item.title}`}>
