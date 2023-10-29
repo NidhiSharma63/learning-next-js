@@ -25,14 +25,14 @@ interface IData {
 //   }
 // };
 
-export default function Page({ data }: { data: IData }) {
+export default function Page({ res }: { res: IData }) {
   return (
     <>
       <Head>{/* <title>{router.query.slug}</title> */}</Head>
       <div className="gap-5 flex justify-center flex-col items-center w-full">
-        {/* <h1 className="text-lg font-medium">Author : {data.author}</h1>
-        <h1 className="text-lg font-medium">Title of our page is : {data.title}</h1>
-        <h1 className="text-lg font-medium">Description : {data.content}</h1> */}
+        <h1 className="text-lg font-medium">Author : {res.author}</h1>
+        <h1 className="text-lg font-medium">Title of our page is : {res.title}</h1>
+        <h1 className="text-lg font-medium">Description : {res.content}</h1>
       </div>
     </>
   );
@@ -50,7 +50,6 @@ export async function getStaticPaths() {
       });
     });
     const allPaths = readFolder.map((item: string) => {
-      console.log(item, "item");
       return {
         params: {
           slug: item.replace(/-/g, " ").replace(/\..+$/, ""),
@@ -73,9 +72,10 @@ export const getStaticProps = async (context: GetStaticPropsContext) => {
     if (!slug) {
       throw new Error("Slug not found");
     }
-
-    const data = fs.readFileSync(`blogData/${slug}.json`, "utf-8");
-    return { props: { data } };
+    if (typeof slug === "string") {
+      const res = fs.readFileSync(`blogData/${slug.replace(/ /g, "-")}.json`, "utf-8");
+      return { props: { res: JSON.parse(res) } };
+    }
   } catch (error) {
     return { props: { res: [] } };
   }
