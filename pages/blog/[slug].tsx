@@ -25,14 +25,14 @@ interface IData {
 //   }
 // };
 
-export default function Page({ res }: { res: IData }) {
+export default function Page({ data }: { data: IData }) {
   return (
     <>
       <Head>{/* <title>{router.query.slug}</title> */}</Head>
       <div className="gap-5 flex justify-center flex-col items-center w-full">
-        <h1 className="text-lg font-medium">Author : {res.author}</h1>
-        <h1 className="text-lg font-medium">Title of our page is : {res.title}</h1>
-        <h1 className="text-lg font-medium">Description : {res.content}</h1>
+        {/* <h1 className="text-lg font-medium">Author : {data.author}</h1>
+        <h1 className="text-lg font-medium">Title of our page is : {data.title}</h1>
+        <h1 className="text-lg font-medium">Description : {data.content}</h1> */}
       </div>
     </>
   );
@@ -40,16 +40,23 @@ export default function Page({ res }: { res: IData }) {
 
 export async function getStaticPaths() {
   try {
-    const data = await fetch("http://localhost:3000/api/blogs");
-    const res = await data.json();
-    const allPaths = await res.map((item: IData) => {
+    const readFolder = await new Promise<string[]>((resolve, reject) => {
+      fs.readdir("blogData", (err, data) => {
+        if (err) {
+          reject("An Error occured");
+        } else {
+          resolve(data);
+        }
+      });
+    });
+    const allPaths = readFolder.map((item: string) => {
+      console.log(item, "item");
       return {
         params: {
-          slug: item.title.replace(/\s+/g, "-"),
+          slug: item.replace(/-/g, " ").replace(/\..+$/, ""),
         },
       };
     });
-    // console.log(allPaths, "All paths");
     return {
       paths: allPaths,
       fallback: false,
@@ -60,6 +67,7 @@ export async function getStaticPaths() {
 }
 // <ParsedUrlQuery, PreviewData>
 export const getStaticProps = async (context: GetStaticPropsContext) => {
+  console.log(context, "This is context");
   try {
     const { slug } = context.params || {};
     if (!slug) {
