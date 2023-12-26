@@ -36,7 +36,7 @@ const Home = ({res}: {res: IData[]}) => {
         <h1 className="text-5xl">Hunter Code</h1>
         <Image className={styles.homeImg} src="/images/coderImg.avif" alt="coder image" width={200} height={200} />
         <div className="mt-10 flex justify-center flex-col items-center w-full">
-          <h1 className="text-2xl">Latest Blogs</h1>
+          <h2 className="text-2xl">Frontend related blog</h2>
           {res?.map((item: {title: string; content: string; author: string}, index: number): JSX.Element => {
             return (
               <div key={index} className="mt-10 border-2 border-black rounded border-solid p-2">
