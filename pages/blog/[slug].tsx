@@ -35,7 +35,7 @@ export default function Page({res}: {res: IData}) {
           name="description"
           content="In-depth tutorials and articles about React, JavaScript, HTML, CSS, and React Hooks. Learn the latest in web development and front-end frameworks."
         />
-        <meta property="og:title" content="Your Blog Title" />
+        <meta property="og:title" content={res.title} />
         <meta
           property="og:description"
           content="Expert insights and tutorials on React, JavaScript, HTML, CSS, and React Hooks."
