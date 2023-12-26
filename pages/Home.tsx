@@ -25,7 +25,7 @@ const Home = ({res}: {res: IData[]}) => {
         />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://www.yourwebsite.com" />
-        <meta charset="UTF-8" />
+        <meta charSet="UTF-8" />
         <meta name="author" content="Nidhi Sharma" />
         <meta
           name="keywords"
